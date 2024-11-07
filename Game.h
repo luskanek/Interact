@@ -16,6 +16,7 @@ enum ObjectType
 
 enum Offsets
 {
+    FUN_AUTOLOOT =              0x4C1FA0,
     FUN_OBJECT_POINTER =        0x464870,
     FUN_IS_IN_WORLD =           0xB4B424,
     FUN_LUA_CFUNCTION =         0x6F3070,
@@ -54,6 +55,8 @@ namespace Game
     bool IsUnitSkinnable(uint32_t unit);
 
     void SetTarget(uint64_t guid);
+
+    void LootAll();
 
     inline bool IsInWorld() { return *(char*)Offsets::FUN_IS_IN_WORLD; }
 }

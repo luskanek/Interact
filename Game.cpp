@@ -43,6 +43,8 @@ namespace Game
     {
         FUN_INTERACT* function = (FUN_INTERACT*)fun_ptr;
         function(pointer, 1);
+
+        Game::LootAll();
     }
 
     bool IsUnitLootable(uint32_t unit)
@@ -64,6 +66,14 @@ namespace Game
         func* function = (func*)Offsets::FUN_SET_TARGET;
 
         function(guid);
+    }
+
+    void LootAll()
+    {
+        typedef void __stdcall func();
+        func* function = (func*)Offsets::FUN_AUTOLOOT;
+
+        function();
     }
 }
 
