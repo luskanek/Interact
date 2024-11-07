@@ -9,7 +9,7 @@ The mod works by comparing the distances of visible objects that are close to th
 > [!NOTE]
 > The mod is intended to be used with [VanillaFixes](https://github.com/hannesmann/vanillafixes). Install VanillaFixes first before proceeding with the installation of Interact.
 
-1. Download the latest release from [here](https://github.com/luskanek/Interact/releases/download/release/Interact.zip)
+1. Download the latest release from [here](https://github.com/luskanek/Interact/releases/latest/download/Interact.zip)
 2. Extract the downloaded `.zip` file
 3. Move the extracted contents to your World of Warcraft directory (overwrite if needed)
 4. In your World of Warcraft directory, open `dlls.txt` (included with VanillaFixes) and add `Interact.dll` on a new line at the end of the `dlls.txt` file
