@@ -39,12 +39,10 @@ namespace Game
         };
     }
 
-    void Interact(int pointer, int fun_ptr)
+    void Interact(uint32_t pointer, int autoloot, int fun_ptr)
     {
-        FUN_INTERACT* function = (FUN_INTERACT*)fun_ptr;
-        function(pointer, 1);
-
-        Game::LootAll();
+        FUN_ONRIGHTCLICK function = reinterpret_cast<FUN_ONRIGHTCLICK>(fun_ptr);
+        function(pointer, autoloot);
     }
 
     bool IsUnitLootable(uint32_t unit)
@@ -66,14 +64,6 @@ namespace Game
         func* function = (func*)Offsets::FUN_SET_TARGET;
 
         function(guid);
-    }
-
-    void LootAll()
-    {
-        typedef void __stdcall func();
-        func* function = (func*)Offsets::FUN_AUTOLOOT;
-
-        function();
     }
 }
 

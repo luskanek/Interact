@@ -16,7 +16,6 @@ enum ObjectType
 
 enum Offsets
 {
-    FUN_AUTOLOOT =              0x4C1FA0,
     FUN_OBJECT_POINTER =        0x464870,
     FUN_IS_IN_WORLD =           0xB4B424,
     FUN_LUA_CFUNCTION =         0x6F3070,
@@ -30,7 +29,7 @@ enum Offsets
 
 typedef int(__fastcall* LUA_CFUNCTION)(void* L);
 typedef const char* (__fastcall* LUA_TOSTRING)(void* L, int index);
-typedef unsigned int __fastcall FUN_INTERACT(int pointer, int autoloot);
+typedef void(__thiscall* FUN_ONRIGHTCLICK)(uint32_t pointer, int autoloot);
 
 typedef struct 
 {
@@ -49,14 +48,12 @@ namespace Game
 
     C3Vector GetUnitPosition(uint32_t unit);
 
-    void Interact(int pointer, int fun_ptr);
+    void Interact(uint32_t pointer, int autoloot, int fun_ptr);
 
     bool IsUnitLootable(uint32_t unit);
     bool IsUnitSkinnable(uint32_t unit);
 
     void SetTarget(uint64_t guid);
-
-    void LootAll();
 
     inline bool IsInWorld() { return *(char*)Offsets::FUN_IS_IN_WORLD; }
 }

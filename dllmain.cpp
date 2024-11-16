@@ -93,11 +93,11 @@ static uint32_t InteractNearest()
     if (candidateType == ObjectType::UNIT)
     {
         Game::SetTarget(candidateGUID);
-        Game::Interact(candidate, Offsets::FUN_RIGHT_CLICK_UNIT);
+        Game::Interact(candidate, 1, Offsets::FUN_RIGHT_CLICK_UNIT);
     }
     else
     {
-        Game::Interact(candidatePointer, Offsets::FUN_RIGHT_CLICK_OBJECT);
+        Game::Interact(candidatePointer, 1, Offsets::FUN_RIGHT_CLICK_OBJECT);
     }
 
     return 1;
