@@ -4,4 +4,6 @@
 ## Notes: Interact Key from Retail ported to Vanilla.
 ## Version: GIT
 
+Interact.lua
+
 Bindings.xml
