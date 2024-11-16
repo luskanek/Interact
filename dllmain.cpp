@@ -36,12 +36,18 @@ static uint32_t InteractNearest()
         uint64_t guid = *reinterpret_cast<uint64_t*>(currentObject + 0x30);
         uint32_t pointer = Game::GetObjectPointer(guid);
         uint32_t type = *reinterpret_cast<uint32_t*>(pointer + 0x14);
-        uint64_t owner = *reinterpret_cast<uint64_t*>(*reinterpret_cast<uint32_t*>(pointer + 0x8) + 0x30);
 
-        if (owner == playerGUID)
+        uint64_t summonedByGUID = *reinterpret_cast<uint64_t*>(*reinterpret_cast<uint32_t*>(pointer + 0x8) + 0x30);
+        uint32_t summonedBy = Game::GetObjectPointer(summonedByGUID);
+
+        if (summonedByGUID != 0 && summonedBy != 0)
         {
-            currentObject = *reinterpret_cast<uint32_t*>(currentObject + 0x3C);
-            continue;
+            uint32_t owner = *reinterpret_cast<uint32_t*>(summonedBy + 0x14);
+            if (owner == ObjectType::PLAYER)
+            {
+                currentObject = *reinterpret_cast<uint32_t*>(currentObject + 0x3C);
+                continue;
+            }
         }
 
         if (type == ObjectType::UNIT)
