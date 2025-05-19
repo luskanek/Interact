@@ -1,5 +1,8 @@
 <Bindings>
     <Binding name="Interact" header="INTERACT">
-        InteractNearest()
+        InteractNearest(0)
+    </Binding>
+    <Binding name="Interact (auto-loot)">
+        InteractNearest(1)
     </Binding>
 </Bindings>

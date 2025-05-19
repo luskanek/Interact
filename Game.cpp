@@ -1,8 +1,5 @@
 #include "Game.h"
 
-LUA_CFUNCTION p_lua_gettop = reinterpret_cast<LUA_CFUNCTION>(Offsets::FUN_LUA_CFUNCTION);
-LUA_TOSTRING p_lua_tostring = reinterpret_cast<LUA_TOSTRING>(Offsets::FUN_LUA_TOSTRING);
-
 namespace Game
 {
     uint32_t __stdcall GetObjectPointer(uint64_t guid)
@@ -64,18 +61,5 @@ namespace Game
         func* function = (func*)Offsets::FUN_SET_TARGET;
 
         function(guid);
-    }
-}
-
-namespace Lua
-{
-    const char* ToString(void* L, int index)
-    {
-        return p_lua_tostring(L, index);
-    }
-
-    int GetTop(void* L)
-    {
-        return p_lua_gettop(L);
     }
 }

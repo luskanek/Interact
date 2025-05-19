@@ -15,9 +15,15 @@ static float distance3D(C3Vector v1, C3Vector v2) {
     return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
-static uint32_t InteractNearest()
+static uint32_t InteractNearest(void* L)
 {
     if (!Game::IsInWorld()) return 0;
+
+    if (!Lua::IsNumber(L, 1))
+    {
+        Lua::PrintError(L, "Usage: InteractNearest(autoloot)");
+        return 0;
+    }
 
     uint32_t objects = *reinterpret_cast<uint32_t*>(Offsets::VISIBLE_OBJECTS);
     uint32_t currentObject = *reinterpret_cast<uint32_t*>(objects + 0xAC);
@@ -96,14 +102,16 @@ static uint32_t InteractNearest()
     int candidatePointer = Game::GetObjectPointer(candidateGUID);
     uint32_t candidateType = *reinterpret_cast<uint32_t*>(candidatePointer + 0x14);
 
+    int autoloot = Lua::ToNumber(L, 1);
+
     if (candidateType == ObjectType::UNIT)
     {
         Game::SetTarget(candidateGUID);
-        Game::Interact(candidate, 1, Offsets::FUN_RIGHT_CLICK_UNIT);
+        Game::Interact(candidate, autoloot, Offsets::FUN_RIGHT_CLICK_UNIT);
     }
     else
     {
-        Game::Interact(candidatePointer, 1, Offsets::FUN_RIGHT_CLICK_OBJECT);
+        Game::Interact(candidatePointer, autoloot, Offsets::FUN_RIGHT_CLICK_OBJECT);
     }
 
     return 1;
