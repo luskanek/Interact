@@ -4,8 +4,8 @@
 
 #include <cmath>
 
-LUA_CFUNCTION p_original_UnitXP = NULL;
-LUA_CFUNCTION p_UnitXP = reinterpret_cast<LUA_CFUNCTION>(Offsets::FUN_UNITXP);
+typedef void(__stdcall* LoadScriptFunctions_t)();
+LoadScriptFunctions_t LoadScriptFunctions_o = nullptr;
 
 static float distance3D(C3Vector v1, C3Vector v2) {
     float dx = v2.x - v1.x;
@@ -109,47 +109,45 @@ static uint32_t InteractNearest()
     return 1;
 }
 
-int __fastcall detoured_UnitXP(void* L)
+void __stdcall LoadScriptFunctions_h()
 {
-    if (Lua::GetTop(L) >= 2)
-    {
-        const char* arg = Lua::ToString(L, 1);
-        if (strcmp(arg, "interact") == 0)
-        {
-            InteractNearest();
-            return 1;
-        }
-    }
-    return p_original_UnitXP(L);
+    DWORD oldProtect;
+    BYTE trampoline[] = {
+        0xB8, 0, 0, 0, 0, // mov eax, &InteractNearest
+        0xFF, 0xE0        // jmp eax
+    };
+    DWORD addr1 = (DWORD)&InteractNearest;
+    memcpy(&trampoline[1], &addr1, 4);
+    VirtualProtect((LPVOID)Offsets::FUN_CUSTOM_INTERACT, sizeof(trampoline), PAGE_EXECUTE_READWRITE, &oldProtect);
+    memcpy((void*)Offsets::FUN_CUSTOM_INTERACT, trampoline, sizeof(trampoline));
+    VirtualProtect((LPVOID)Offsets::FUN_CUSTOM_INTERACT, sizeof(trampoline), oldProtect, &oldProtect);
+
+    Game::RegisterFunction("InteractNearest", Offsets::FUN_CUSTOM_INTERACT);
+
+    LoadScriptFunctions_o();
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
-        case DLL_PROCESS_ATTACH:
-            DisableThreadLibraryCalls(hModule);
+    case DLL_PROCESS_ATTACH:
+        DisableThreadLibraryCalls(hModule);
 
-            if (MH_Initialize() != MH_OK)
-            {
-                return FALSE;
-            }
+        if (MH_Initialize() != MH_OK)
+            return FALSE;
 
-            if (MH_CreateHook(p_UnitXP, &detoured_UnitXP, reinterpret_cast<LPVOID*>(&p_original_UnitXP)) != MH_OK)
-            {
-                return FALSE;
-            }
+        if (MH_CreateHook((LPVOID)Offsets::FUN_LOAD_SCRIPT_FUNCTIONS, &LoadScriptFunctions_h, reinterpret_cast<LPVOID*>(&LoadScriptFunctions_o)) != MH_OK)
+            return FALSE;
 
-            if (MH_EnableHook(p_UnitXP) != MH_OK)
-            {
-                return FALSE;
-            }
+        if (MH_EnableHook(MH_ALL_HOOKS) != MH_OK)
+            return FALSE;
 
-            break;
+        break;
 
-        case DLL_PROCESS_DETACH:
-            MH_Uninitialize();
-            break;
+    case DLL_PROCESS_DETACH:
+        MH_Uninitialize();
+        break;
     }
 
     return TRUE;

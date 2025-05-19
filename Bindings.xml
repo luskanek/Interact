@@ -1,5 +1,5 @@
 <Bindings>
     <Binding name="Interact" header="INTERACT">
-        UnitXP("interact", 1)
+        InteractNearest()
     </Binding>
 </Bindings>
