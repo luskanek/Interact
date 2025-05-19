@@ -5,7 +5,7 @@ namespace Game
     uint32_t __stdcall GetObjectPointer(uint64_t guid)
     {
         typedef uint32_t __fastcall func(uint64_t guid);
-        func* function = (func*)Offsets::FUN_OBJECT_POINTER;
+        func* function = (func*)Offsets::FUN_GET_OBJECT_POINTER;
 
         return function(guid);
     }

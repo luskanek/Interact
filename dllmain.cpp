@@ -124,8 +124,8 @@ void __stdcall LoadScriptFunctions_h()
         0xB8, 0, 0, 0, 0, // mov eax, &InteractNearest
         0xFF, 0xE0        // jmp eax
     };
-    DWORD addr1 = (DWORD)&InteractNearest;
-    memcpy(&trampoline[1], &addr1, 4);
+    DWORD addr = (DWORD)&InteractNearest;
+    memcpy(&trampoline[1], &addr, 4);
     VirtualProtect((LPVOID)Offsets::FUN_CUSTOM_INTERACT, sizeof(trampoline), PAGE_EXECUTE_READWRITE, &oldProtect);
     memcpy((void*)Offsets::FUN_CUSTOM_INTERACT, trampoline, sizeof(trampoline));
     VirtualProtect((LPVOID)Offsets::FUN_CUSTOM_INTERACT, sizeof(trampoline), oldProtect, &oldProtect);
