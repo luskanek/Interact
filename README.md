@@ -15,10 +15,9 @@ The mod works by comparing the distances of visible objects that are close to th
 4. In your World of Warcraft directory, open `dlls.txt` (included with VanillaFixes) and add `Interact.dll` on a new line at the end of the `dlls.txt` file
 5. Launch the game using `VanillaFixes.exe`, log in and check if your Add-ons list contains the `Interact` add-on
 
-If you've done everything correctly, you should be able to find a new keybinding called 'Interact' in your keybindings menu (it should be located at the end of the keybindings list).
-
-To interact with a nearby object, press the associated key. You can press the key again to loot all items if the loot window is open.
+If you've done everything correctly, you should be able to find two new keybindings called 'Interact' and 'Interact (auto-loot)' in your keybindings menu (it should be located at the end of the keybindings list). To interact with a nearby object, assign a key to the desired keybinding and press the associated key.
 
 ### Credits
 
-[allfoxwy](https://github.com/allfoxwy) and [Zz9uk3](https://github.com/Zz9uk3) as their repositories provided to be very helpful when creating this mod.
+- [Konaka Masaru](https://github.com/allfoxwy) and [Pepopo](https://github.com/pepopo978) from the Turtle WoW community discord for their guidance.
+- Zz9uk3's [ZzukBot](https://github.com/Zz9uk3) repository which contains a lot of useful information.
