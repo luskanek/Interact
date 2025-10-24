@@ -6,6 +6,7 @@
 #include <set>
 
 std::set<int> blacklist = { 179830, 179831, 179785, 179786 };
+const int FISHING_BOBBER_ID = 35591;
 
 typedef void(__stdcall* LoadScriptFunctions_t)();
 LoadScriptFunctions_t LoadScriptFunctions_o = nullptr;
@@ -74,7 +75,18 @@ static uint32_t InteractNearest(void* L)
         }
 
         float distance = distance3D(oPos, pPos);
-        if (distance <= 5.0 && distance < bestDistance)
+        
+        // Check if this is a fishing bobber
+        bool isFishingBobber = false;
+        if (type == ObjectType::GAMEOBJECT)
+        {
+            uint32_t id = *reinterpret_cast<uint32_t*>(pointer + 0x294);
+            isFishingBobber = (id == FISHING_BOBBER_ID);
+        }
+        
+        float maxDistance = isFishingBobber ? 50.0f : 5.0f;
+        
+        if (distance <= maxDistance && distance < bestDistance)
         {
             if (type == ObjectType::UNIT)
             {
